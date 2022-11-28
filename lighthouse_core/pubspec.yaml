@@ -1,0 +1,65 @@
+name: lighthouse_core
+description: The backend code of the Lighthouse tool, shared by both the mobile and desktop versions of Lighthouse.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 0.0.1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  build_runner: ^2.1.0
+  build_test: ^2.1.0
+  build_web_compilers: ^3.0.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+  assets:
+  - assets/
+  fonts:
+  - family: Cairo
+    fonts:
+      - asset: assets/fonts/standard/Cairo-Black.ttf
+        weight: 900
+      - asset: assets/fonts/standard/Cairo-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/standard/Cairo-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/standard/Cairo-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/standard/Cairo-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/standard/Cairo-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/standard/Cairo-Light.ttf
+        weight: 300
+      - asset: assets/fonts/standard/Cairo-ExtraLight.ttf
+        weight: 200
+
+  - family: SourceCodePro
+    fonts:
+      - asset: assets/fonts/monospace/SourceCodePro-Black.ttf
+        weight: 900
+      - asset: assets/fonts/monospace/SourceCodePro-ExtraBold.ttf
+        weight: 800
+      - asset: assets/fonts/monospace/SourceCodePro-Bold.ttf
+        weight: 700
+      - asset: assets/fonts/monospace/SourceCodePro-SemiBold.ttf
+        weight: 600
+      - asset: assets/fonts/monospace/SourceCodePro-Medium.ttf
+        weight: 500
+      - asset: assets/fonts/monospace/SourceCodePro-Regular.ttf
+        weight: 400
+      - asset: assets/fonts/monospace/SourceCodePro-Light.ttf
+        weight: 300
+      - asset: assets/fonts/monospace/SourceCodePro-ExtraLight.ttf
+        weight: 200
+
+  uses-material-design: false
