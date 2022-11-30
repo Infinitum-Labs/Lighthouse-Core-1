@@ -1,3 +1,4 @@
 {
-    "dart.flutterCreateOrganization": "com.infinitumlabs"
+    "dart.flutterCreateOrganization": "com.infinitumlabs",
+    "dart.sdkPath": "/workspaces/Lighthouse-Core/flutter/bin/cache/dart-sdk"
 }
