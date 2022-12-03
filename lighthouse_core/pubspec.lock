@@ -355,6 +355,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
+  markhor_testing_rig:
+    dependency: "direct main"
+    description:
+      path: "lib/testing_rig"
+      relative: true
+    source: path
+    version: "0.0.1"
   matcher:
     dependency: transitive
     description:
@@ -383,10 +390,10 @@ packages:
     dependency: transitive
     description:
       name: mime
-      sha256: dab22e92b41aa1255ea90ddc4bc2feaf35544fd0728e209638cad041a6e3928a
+      sha256: "52e38f7e1143ef39daf532117d6b8f8f617bf4bcd6044ed8c29040d20d269630"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.3"
   node_preamble:
     dependency: transitive
     description:

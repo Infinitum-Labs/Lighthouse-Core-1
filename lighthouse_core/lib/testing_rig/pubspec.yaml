@@ -1,0 +1,13 @@
+name: markhor_testing_rig
+description: A testing framework for the backend and frontend of Lighthouse.
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 0.0.1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+dependencies: 
+
+dev_dependencies:

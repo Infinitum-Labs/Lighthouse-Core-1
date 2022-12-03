@@ -1,24 +1,114 @@
+import 'dart:io';
+
 import '../../data_handling.dart';
+import 'package:markhor_testing_rig/markhor.dart';
 
-void main(List<String> args) async {
-  // GET
-  final Response r = await DB.get(GetObjectById('Projects', 'abracadabra'));
-  print(r.payload);
-  print(r.jwtToken);
-  /* Expected output
-  {}
-  null
-   */
+void main() async {
+  final Console console = Console(
+    IntegrationTest(
+      "HTTP Services",
+      unitTests: [
+        UnitTest<Response>(
+          "getObjectById",
+          asyncAction: (OutputPipe<Response> outputPipe) async {
+            return (await DB.get(GetObjectById('Projects', 'abracadabra')));
+          },
+          reporters: (Response response) =>
+              [ResultReporter('statusCode', response.statusCode)],
+        ),
+        UnitTest<Response>(
+          'bulkGetByFilter',
+          asyncAction: (OutputPipe outputPipe) async {
+            return (await DB.get(
+              BulkGetByFilter(
+                'Projects',
+                Query()
+                  ..greaterThan('a', 10)
+                  ..lessThan('a', 25),
+              ),
+            ));
+          },
+          reporters: (Response response) {
+            return [
+              ResultReporter('statusCode', response.statusCode),
+              ResultReporter('payload', response.payload),
+            ];
+          },
+        ),
+        UnitTest<Response>(
+          "create",
+          asyncAction: (OutputPipe pipe) async {
+            return (await DB.create(
+              Create(
+                'Users',
+                {
+                  "objectId": "us-g8t9o51w-hgppckzv",
+                  "emailAddress": "bohn.jappleseed@gmail.com",
+                  "password": "bohn69",
+                  "userName": "Bohn Jappleseed",
+                  "workbenchId": "wb-17nvrmjh-hgppckzv",
+                  "permissions": ["read", "write"]
+                },
+              ),
+            ));
+          },
+          reporters: (Response response) {
+            return [ResultReporter('statusCode', response.statusCode)];
+          },
+        ),
+        UnitTest<Response>(
+          "bulkCreate",
+          asyncAction: (OutputPipe pipe) async {
+            return (await DB.create(
+              BulkCreate(
+                'Projects',
+                [
+                  {"objectId": "x", "a": 2},
+                  {"objectId": "y", "a": 2},
+                  {"objectId": "z", "a": 2}
+                ],
+              ),
+            ));
+          },
+          reporters: (Response response) {
+            return [ResultReporter('statusCode', response.statusCode)];
+          },
+        ),
+        UnitTest<Response>(
+          "updateById",
+          asyncAction: (OutputPipe pipe) async {
+            return (await DB.update(
+              UpdateById(
+                'Users',
+                'us-g8t9o51w-hgppckzv',
+                {"password": "bohnbap69"},
+              ),
+            ));
+          },
+          reporters: (Response response) {
+            return [ResultReporter('statusCode', response.statusCode)];
+          },
+        ),
+        UnitTest<Response>(
+          "deleteById",
+          asyncAction: (OutputPipe pipe) async {
+            return (await DB
+                .delete(DeleteById('Users', 'us-g8t9o51w-hgppckzv')));
+          },
+          reporters: (Response response) {
+            return [ResultReporter('statusCode', response.statusCode)];
+          },
+        ),
+      ],
+    ),
+    ExecutionEnvironment(),
+    TargetResult({
+      'statusCode': (dynamic code) => 200 <= code && code < 300,
+      'jwtToken': (dynamic token) => token.toString() != 'null',
+      'payload': (dynamic payload) => payload != {},
+    }),
+  );
 
-  // GET JWT
-  final Response r2 =
-      await DB.getJwtToken(GetJwtToken('john.bappleseed@gmail.com', 'john69'));
-  print(r2.payload);
-  print(r2.jwtToken);
-  /*
-  {_id: 2c256ed6-4b32-444e-bd06-c7dafa90938f, _owner: a088b700-0e08-4ce1-961a-89a9b442f2a4, _createdDate: 2022-11-29T02:33:54.450Z, _updatedDate: 2022-11-29T02:34:00.822Z, objectId: abracadabra}
-  authed
-  */
-
-  DB.deinit();
+  await console.runProcess();
+  exit(0);
 }
