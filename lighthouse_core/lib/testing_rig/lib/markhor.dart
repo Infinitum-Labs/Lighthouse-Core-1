@@ -1,5 +1,6 @@
 library markhor;
 
+import 'dart:mirrors';
 import 'dart:async';
 import 'dart:math';
 import 'dart:io';
@@ -7,6 +8,7 @@ import 'dart:io';
 part './utils.dart';
 part './console.dart';
 part './execution_environment.dart';
+part './debugging.dart';
 
 class Markhor {
   final List<TestSuite> testSuites;

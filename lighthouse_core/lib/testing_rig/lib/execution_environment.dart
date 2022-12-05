@@ -17,7 +17,7 @@ class OutputPipe<T> {
 
   OutputPipe(this.testId);
 
-  void log(dynamic msg) => _logs.add(msg);
+  void log(dynamic msg) => _logs.add(msg.toString());
 
   void err(Object e, StackTrace st) => _errors.add({e: st});
 

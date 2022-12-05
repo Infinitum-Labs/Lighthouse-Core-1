@@ -4,10 +4,23 @@ import '../../data_handling.dart';
 import 'package:markhor_testing_rig/markhor.dart';
 
 void main() async {
-  final Console console = Console(
+  final Console httpServices = Console(
     IntegrationTest(
       "HTTP Services",
       unitTests: [
+        UnitTest<Response>(
+          'getJwtToken',
+          asyncAction: (OutputPipe outputPipe) async {
+            final Response r = await DB.getJwtToken(
+                GetJwtToken('john.bappleseed@gmail.com', 'john69'));
+            return (r);
+          },
+          reporters: (Response response) {
+            return [
+              ResultReporter('jwtToken', response.payload.first['signature'])
+            ];
+          },
+        ),
         UnitTest<Response>(
           "getObjectById",
           asyncAction: (OutputPipe<Response> outputPipe) async {
@@ -99,16 +112,60 @@ void main() async {
             return [ResultReporter('statusCode', response.statusCode)];
           },
         ),
+        UnitTest<Response>(
+          'X-getJwtToken-badCredentials',
+          asyncAction: (OutputPipe outputPipe) async {
+            final Response r = await DB.getJwtToken(
+                GetJwtToken('john.bappleseed@gmail.com', 'johnbap69'));
+            return (r);
+          },
+          reporters: (Response response) {
+            return [ResultReporter('X-badCredentials', response.statusCode)];
+          },
+        ),
       ],
     ),
     ExecutionEnvironment(),
     TargetResult({
       'statusCode': (dynamic code) => 200 <= code && code < 300,
-      'jwtToken': (dynamic token) => token.toString() != 'null',
-      'payload': (dynamic payload) => payload != {},
+      'jwtToken': (dynamic token) => token != 'null',
+      'payload': (dynamic payload) => payload != [],
+      'X-badCredentials': (dynamic code) => code == 403,
     }),
   );
 
-  await console.runProcess();
+  final Console jwtArchitecture = Console(
+    IntegrationTest('JWT Architecture', unitTests: [
+      UnitTest<Response>(
+        'getJwtToken',
+        asyncAction: (OutputPipe outputPipe) async {
+          final Response r = await DB
+              .getJwtToken(GetJwtToken('john.bappleseed@gmail.com', 'john69'));
+          return (r);
+        },
+        reporters: (Response response) {
+          return [
+            ResultReporter('jwtToken', response.payload.first['signature'])
+          ];
+        },
+      ),
+      UnitTest<Response>(
+        "getObjectById",
+        asyncAction: (OutputPipe<Response> outputPipe) async {
+          final GetRequest r = GetObjectById('Projects', 'abracadabra');
+          return (await DB.get(r));
+        },
+        reporters: (Response response) =>
+            [ResultReporter('statusCode', response.statusCode)],
+      ),
+    ]),
+    ExecutionEnvironment(),
+    TargetResult({
+      'statusCode': (dynamic code) => 200 <= code && code < 300,
+      'jwtToken': (dynamic token) => token != 'null',
+      'payload': (dynamic payload) => payload != [],
+    }),
+  );
+  await httpServices.runProcess();
   exit(0);
 }
