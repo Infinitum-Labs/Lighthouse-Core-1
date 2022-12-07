@@ -2,7 +2,7 @@ library core.utils;
 
 import 'dart:math';
 
-class ObjectId {
+class ObjectID {
   static const String _chars = 'abcdefghijklmnopqrstuvwxyz1234567890';
   static final Random _rnd = Random();
 
@@ -11,9 +11,20 @@ class ObjectId {
           8, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
   static String generate(String objectPrefix, String userKey) =>
-      '$objectPrefix-' + ObjectId.generateAlphaNumString() + '-$userKey'; // wb-nr8ybar4-voefiyg7
+      '$objectPrefix-' +
+      ObjectID.generateAlphaNumString() +
+      '-$userKey'; // wb-nr8ybar4-voefiyg7
 }
 
-void main() {
-  print(ObjectId.generate('wb', '8a7bzqhn'));
+class LoopUtils {
+  static void iterateOver<T>(Iterable<T> items, void Function(T) action) {
+    final int iterationLimit = items.length;
+    for (int i = 0; i < iterationLimit; i++) {
+      action(items.elementAt(i));
+    }
+  }
+}
+
+extension ListUtils<O> on List<O> {
+  List<N> listOf<N>(N Function(O) converter) => map(converter).toList();
 }

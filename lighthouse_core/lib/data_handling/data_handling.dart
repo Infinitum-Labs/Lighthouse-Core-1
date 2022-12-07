@@ -1,3 +1,4 @@
 library core.data_handling;
 
-export './transfer/transfer.dart';
+export './storage/storage.dart';
+export './transfer/transfer.dart' hide JSON;

@@ -1,7 +1,5 @@
 part of core.data_handling.transfer;
 
-typedef JSON = Map<String, dynamic>;
-
 class JWTToken {
   final String value;
   final int issuedAt;

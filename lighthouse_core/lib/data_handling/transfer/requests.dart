@@ -82,11 +82,42 @@ class UpdateById extends PatchRequest {
   final String collectionId;
   final String objectId;
 
-  UpdateById(this.collectionId, this.objectId, payload)
+  UpdateById(this.collectionId, this.objectId, dynamic payload)
       : super('/updateById', payload) {
     params.addEntries([
       MapEntry("collectionId", collectionId),
       MapEntry("objectId", objectId),
+    ]);
+  }
+}
+
+class BulkUpdate extends PatchRequest {
+  final String collectionId;
+
+  BulkUpdate(this.collectionId, dynamic payload)
+      : super('/bulkUpdate', payload) {
+    params.addEntries([
+      MapEntry("collectionId", collectionId),
+    ]);
+  }
+}
+
+class SynchronisationUpdate extends PatchRequest {
+  final List<ObjectId> deletions;
+  final List<ObjectId> dirtyObjects;
+  final List<LighthouseObject> creations;
+
+  SynchronisationUpdate({
+    required this.creations,
+    required this.deletions,
+    required this.dirtyObjects,
+  }) : super('/synchronisationUpdate', {
+          'creations':
+              creations.map((LighthouseObject o) => o.toJSON()).toList()
+        }) {
+    params.addEntries([
+      MapEntry('deletions', json.encode(deletions)),
+      MapEntry('dirtyObjects', json.encode(dirtyObjects)),
     ]);
   }
 }

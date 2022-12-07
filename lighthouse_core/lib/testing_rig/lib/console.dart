@@ -2,7 +2,7 @@ part of markhor;
 
 class Console {
   final ExecutionEnvironment environment;
-  final TestProcesss process;
+  final TestProcess process;
   final TargetResult target;
   late String windowTitle;
   final List<InterfaceComponent> components = [];

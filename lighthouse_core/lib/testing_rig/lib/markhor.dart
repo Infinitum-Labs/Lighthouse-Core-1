@@ -16,12 +16,12 @@ class Markhor {
   Markhor(this.testSuites);
 }
 
-abstract class TestProcesss {
+abstract class TestProcess {
   final String name;
   late String testId = "$name-${Utils.randomAlphaNum}";
   late TestResult testResult = TestResult(testId);
 
-  TestProcesss(this.name);
+  TestProcess(this.name);
 
   Future<TestResult> run(TargetResult target, ExecutionEnvironment environment);
 
@@ -29,7 +29,7 @@ abstract class TestProcesss {
       int indentLevel, ExecutionEnvironment environment);
 }
 
-class TestSuite extends TestProcesss {
+class TestSuite extends TestProcess {
   final List<FunctionalTest> functionalTests;
   final List<PerformanceTest> performanceTests;
 
@@ -70,7 +70,7 @@ class TestSuite extends TestProcesss {
   }
 }
 
-class FunctionalTest extends TestProcesss {
+class FunctionalTest extends TestProcess {
   final List<IntegrationTest> integrationTests;
 
   FunctionalTest(super.name, {this.integrationTests = const []});
@@ -100,7 +100,7 @@ class FunctionalTest extends TestProcesss {
   }
 }
 
-class PerformanceTest extends TestProcesss {
+class PerformanceTest extends TestProcess {
   PerformanceTest(super.name);
   @override
   Future<TestResult> run(
@@ -117,7 +117,7 @@ class PerformanceTest extends TestProcesss {
   }
 }
 
-class IntegrationTest extends TestProcesss {
+class IntegrationTest extends TestProcess {
   final List<UnitTest> unitTests;
 
   IntegrationTest(super.name, {this.unitTests = const []});
@@ -147,7 +147,7 @@ class IntegrationTest extends TestProcesss {
   }
 }
 
-class UnitTest<T> extends TestProcesss {
+class UnitTest<T> extends TestProcess {
   final T Function(OutputPipe)? syncAction;
   final Future<T> Function(OutputPipe<T>)? asyncAction;
   final List<ResultReporter> Function(T) reporters;
